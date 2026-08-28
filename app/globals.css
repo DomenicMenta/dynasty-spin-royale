@@ -29,3 +29,10 @@
 .roster-slot:has(.player) .player>div{padding-bottom:34px}
 .pick-bank>div{justify-content:flex-start}
 .pick-bank>div .eyebrow{margin-bottom:0}
+.trade-history{width:min(92%,1120px);margin:0 auto 24px;border:1px solid #6a5322;background:linear-gradient(135deg,#171108,#090806);padding:18px 20px;box-shadow:0 18px 50px #0005}
+.trade-history-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:10px}.trade-history-head h2{margin:0;font:24px Georgia,serif}.trade-history-head>span{font:8px monospace;color:#8f835f;letter-spacing:.1em}
+.trade-history article{display:grid;grid-template-columns:1fr auto;align-items:center;gap:18px;border-top:1px solid #40351d;padding:13px 0}
+.trade-route{display:flex;align-items:center;gap:12px;min-width:0}.trade-route>i{color:#79652e;font:16px Georgia,serif;font-style:normal;flex:0 0 auto}
+.trade-asset,.trade-pick{display:flex;flex-direction:column;min-width:0}.trade-asset b,.trade-pick b{font:9px monospace;color:#eee5ce;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.trade-asset small,.trade-pick small{font:8px monospace;color:#8f835f;margin-top:4px}.trade-pick b{color:var(--gold)}.trade-asset.incoming b{color:#fff8e8}
+.trade-return{display:flex;gap:8px;align-items:center;justify-content:flex-end}.trade-return strong,.trade-return span{font:bold 8px monospace;padding:6px 8px;border:1px solid #6d5a2b;white-space:nowrap}.trade-return strong{color:var(--gold)}.trade-return .positive{color:#42e49a;border-color:#267a58}.trade-return .negative{color:#ff776e;border-color:#7a3833}
+@media(max-width:700px){.trade-history{padding:15px}.trade-history article{grid-template-columns:1fr}.trade-route{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:7px}.trade-route .trade-pick{grid-column:1/4;grid-row:2;padding-left:0}.trade-route>i:first-of-type{display:none}.trade-return{justify-content:flex-start}.trade-asset b,.trade-pick b{font-size:8px}}
