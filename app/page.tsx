@@ -14,16 +14,16 @@ const GROUPS=Object.fromEntries((['QB','RB','WR','TE'] as Pos[]).map(pos=>[pos,B
 const PLAYERS:Player[]=BASE.map(p=>{const peer=GROUPS[p.pos];const pct=peer.filter(v=>v>p.points).length/peer.length*100;const tier:Tier=pct<=3?'platinum':pct<=8?'ruby':pct<=20?'gold':pct<=40?'emerald':pct<=65?'silver':'bronze';return {...p,percentile:+pct.toFixed(1),tier,value:Math.round(12+(100-pct)*1.18)}});
 const DEFAULT_SLOTS:Slot[]=['QB','RB','RB','WR','WR','TE','FLX','BENCH'].map(label=>({label,player:null,locked:label==='BENCH'}));
 const PICK_INFO:{id:Pick;label:string;value:number;range:string;copy:string;benchOdds:string}[]=[
- {id:'first',label:'1ST ROUND',value:70,range:'+15 to +180 pts',copy:'Premium upgrade power with real jackpot upside.',benchOdds:'12% Platinum · 28% Ruby · 32% Gold'},
- {id:'second',label:'2ND ROUND',value:40,range:'+8 to +115 pts',copy:'Strong upside at a manageable dynasty cost.',benchOdds:'4% Platinum · 16% Ruby · 30% Gold'},
- {id:'third',label:'3RD ROUND',value:20,range:'+4 to +55 pts',copy:'Affordable improvement with a lower ceiling.',benchOdds:'1% Platinum · 6% Ruby · 17% Gold'}
+ {id:'first',label:'1ST ROUND',value:70,range:'+15 to +180 pts',copy:'Premium upgrade power with real jackpot upside.',benchOdds:'17% Platinum · 40% Ruby · 35% Gold · 8% Emerald'},
+ {id:'second',label:'2ND ROUND',value:40,range:'+8 to +115 pts',copy:'Strong upside at a manageable dynasty cost.',benchOdds:'7% Platinum · 20% Ruby · 32% Gold · 32% Emerald · 6% Silver · 5% Bronze'},
+ {id:'third',label:'3RD ROUND',value:20,range:'+4 to +55 pts',copy:'Affordable improvement with a lower ceiling.',benchOdds:'3% Platinum · 8% Ruby · 18% Gold · 25% Emerald · 26% Silver · 20% Bronze'}
 ];
 const PICK_CFG={first:{min:15,max:180,power:.62,minDV:70,targetDV:90},second:{min:8,max:115,power:.9,minDV:40,targetDV:55},third:{min:4,max:55,power:1.08,minDV:20,targetDV:30}};
 const SPIN_ODDS:{tier:Tier;weight:number}[]=[{tier:'platinum',weight:2},{tier:'ruby',weight:10},{tier:'gold',weight:26},{tier:'emerald',weight:29},{tier:'silver',weight:21},{tier:'bronze',weight:12}];
 const BENCH_ODDS:Record<Pick,{tier:Tier;weight:number}[]>={
- first:[{tier:'platinum',weight:12},{tier:'ruby',weight:28},{tier:'gold',weight:32},{tier:'emerald',weight:18},{tier:'silver',weight:8},{tier:'bronze',weight:2}],
- second:[{tier:'platinum',weight:4},{tier:'ruby',weight:16},{tier:'gold',weight:30},{tier:'emerald',weight:28},{tier:'silver',weight:16},{tier:'bronze',weight:6}],
- third:[{tier:'platinum',weight:1},{tier:'ruby',weight:6},{tier:'gold',weight:17},{tier:'emerald',weight:27},{tier:'silver',weight:28},{tier:'bronze',weight:21}]
+ first:[{tier:'platinum',weight:17},{tier:'ruby',weight:40},{tier:'gold',weight:35},{tier:'emerald',weight:8},{tier:'silver',weight:0},{tier:'bronze',weight:0}],
+ second:[{tier:'platinum',weight:7},{tier:'ruby',weight:20},{tier:'gold',weight:32},{tier:'emerald',weight:32},{tier:'silver',weight:6},{tier:'bronze',weight:5}],
+ third:[{tier:'platinum',weight:3},{tier:'ruby',weight:8},{tier:'gold',weight:18},{tier:'emerald',weight:25},{tier:'silver',weight:26},{tier:'bronze',weight:20}]
 };
 const RECORD_LADDER=[
  {min:2222.8,record:'17–0',percentile:'TOP 5%',title:'PERFECT DYNASTY'},
@@ -48,7 +48,7 @@ function eligible(label:string,p:Player){return label==='FLX'||label==='BENCH'?p
 function randomPlayer(label:string,excluded=new Set<string>()){const pool=PLAYERS.filter(p=>eligible(label,p)&&!excluded.has(p.name));return pool[Math.floor(Math.random()*pool.length)]}
 function spinPlayer(label:string,forceElite=false,excluded=new Set<string>()){const odds=forceElite?SPIN_ODDS.filter(o=>o.tier==='platinum'||o.tier==='ruby'):SPIN_ODDS;let roll=Math.random()*odds.reduce((n,o)=>n+o.weight,0);const selected=odds.find(o=>(roll-=o.weight)<=0)?.tier||odds[odds.length-1].tier;const pool=PLAYERS.filter(p=>eligible(label,p)&&p.tier===selected&&!excluded.has(p.name));return pool[Math.floor(Math.random()*pool.length)]||randomPlayer(label,excluded)}
 function upgradePlayer(label:string,current:Player,pick:Pick,excluded:Set<string>){const cfg=PICK_CFG[pick];const upgrades=PLAYERS.filter(p=>eligible(label,p)&&p.points>current.points&&!excluded.has(p.name));if(!upgrades.length)return null;const valueUpgrades=upgrades.filter(p=>p.value-current.value>=cfg.minDV);const candidates=valueUpgrades.length?valueUpgrades:upgrades;const desired=current.points+cfg.min+Math.pow(Math.random(),cfg.power)*(cfg.max-cfg.min);const capped=candidates.filter(p=>p.points<=current.points+cfg.max);const pool=capped.length?capped:candidates;return [...pool].sort((a,b)=>(Math.abs(a.points-desired)+Math.abs((a.value-current.value)-cfg.targetDV))-(Math.abs(b.points-desired)+Math.abs((b.value-current.value)-cfg.targetDV)))[Math.floor(Math.random()*Math.min(6,pool.length))]}
-function benchPlayer(pick:Pick,excluded:Set<string>){const odds=BENCH_ODDS[pick];let roll=Math.random()*100;const tier=odds.find(o=>(roll-=o.weight)<=0)?.tier||'bronze';const pool=PLAYERS.filter(p=>p.pos!=='QB'&&p.tier===tier&&!excluded.has(p.name));return pool[Math.floor(Math.random()*pool.length)]||randomPlayer('BENCH',excluded)}
+function benchPlayer(pick:Pick,excluded:Set<string>){const odds=BENCH_ODDS[pick];let roll=Math.random()*odds.reduce((sum,o)=>sum+o.weight,0);const tier=odds.find(o=>(roll-=o.weight)<=0)?.tier||'bronze';const pool=PLAYERS.filter(p=>p.pos!=='QB'&&p.tier===tier&&!excluded.has(p.name));return pool[Math.floor(Math.random()*pool.length)]||randomPlayer('BENCH',excluded)}
 function Portrait({p,big=false}:{p:Player,big?:boolean}){return <div className={`portrait ${big?'big':''}`}><span>{p.name.split(' ').map(n=>n[0]).slice(-2).join('')}</span>{p.photo&&<img src={p.photo} alt={`${p.name} headshot`} loading="lazy" referrerPolicy="no-referrer" onError={e=>{e.currentTarget.style.display='none'}}/>}</div>}
 function openPositions(slots:Slot[]){const flexOpen=slots.some(s=>s.label==='FLX'&&!s.player);return (['QB','RB','WR','TE'] as Pos[]).filter(pos=>slots.some(s=>s.label===pos&&!s.player)||(pos!=='QB'&&flexOpen))}
 function slotFor(slots:Slot[],player:Player){const direct=slots.findIndex(s=>s.label===player.pos&&!s.player);return direct>=0?direct:slots.findIndex(s=>s.label==='FLX'&&!s.player)}
