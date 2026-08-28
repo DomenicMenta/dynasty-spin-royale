@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './results.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://dynasty-spin.domenictommenta.chatgpt.site'),
