@@ -19,10 +19,32 @@
 .season-result dd { margin: 5px 0 0; font: 18px Georgia, serif; color: #f5edd8; }
 .season-result dl > b { font: 20px Georgia, serif; color: #735d2e; }
 .season-result > em { font: 8px/1.4 monospace; color: #c9a84d; font-style: normal; letter-spacing: .09em; max-width: 125px; text-align: right; }
+.draft-name-form { min-width: 210px; }
+.draft-name-form label { display: block; margin-bottom: 7px; color: #c9a84d; font: bold 7px monospace; letter-spacing: .12em; text-align: left; }
+.draft-name-form > div { display: flex; border: 1px solid #765b27; background: #080604; }
+.draft-name-form input { width: 100%; min-width: 0; border: 0; outline: 0; padding: 10px; background: transparent; color: #fff5dc; font: 12px Georgia, serif; }
+.draft-name-form input::placeholder { color: #6f654f; }
+.draft-name-form button { border: 0; border-left: 1px solid #765b27; padding: 0 10px; background: linear-gradient(120deg,#9d6e18,#e3b748); color: #090704; font: bold 7px monospace; white-space: nowrap; cursor: pointer; }
+.draft-name-form button:disabled { opacity: .35; cursor: default; }
+.leaderboard-modal { width: min(680px,100%); max-height: 88vh; overflow: hidden; border: 1px solid #8b6a27; background: radial-gradient(circle at 20% 0,#5e3a0c44,transparent 30%),linear-gradient(145deg,#181208,#080705); padding: 30px; position: relative; box-shadow: 0 30px 100px #000; }
+.leaderboard-modal h2 { margin: 0; font: 30px Georgia,serif; }
+.leaderboard-head { display: grid; grid-template-columns: 1fr auto; margin-top: 22px; padding: 0 10px 8px; color: #8f835f; font: 7px monospace; letter-spacing: .12em; }
+.leaderboard-list { max-height: 62vh; overflow: auto; border-top: 1px solid #4b3b1e; }
+.leaderboard-list article { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; min-height: 54px; padding: 8px 10px; border-bottom: 1px solid #302817; }
+.leaderboard-list article:nth-child(-n+3) { background: linear-gradient(90deg,#d59d2514,transparent); }
+.leaderboard-list article > strong { color: #d7ad4d; font: 20px Georgia,serif; text-align: center; }
+.leaderboard-list article div b,.leaderboard-list article div small { display: block; }
+.leaderboard-list article div b { color: #fff4d8; font: 14px Georgia,serif; }
+.leaderboard-list article div small { margin-top: 4px; color: #877b61; font: 7px monospace; }
+.leaderboard-list article > span { color: #efc65d; font: 18px Georgia,serif; }
+.leaderboard-empty { padding: 45px 15px; color: #8f835f; text-align: center; font: 8px/1.5 monospace; letter-spacing: .1em; }
 @media (max-width: 800px) {
   .season-result { grid-template-columns: 1fr; text-align: center; }
   .season-result > div:first-child { border-right: 0; border-bottom: 1px solid #5b4620; padding-bottom: 16px; }
   .season-result dl { gap: 10px; }
   .season-result dd { font-size: 14px; }
   .season-result > em { max-width: none; text-align: center; }
+  .draft-name-form { width: 100%; min-width: 0; }
+  .leaderboard-modal { padding: 25px 16px; }
+  .leaderboard-list article { grid-template-columns: 28px 1fr auto; }
 }
