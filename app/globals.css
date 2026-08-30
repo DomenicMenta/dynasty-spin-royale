@@ -126,3 +126,4 @@
  .roster-slot:has(.player) .player>div strong{font-size:19px}
 }
 .topbar nav>button:not(.icon-button){border:0;background:none;color:#9d9277;font:9px monospace;letter-spacing:.11em;cursor:pointer}
+@media(max-width:700px){.topbar nav>button:first-child{display:block}.topbar nav>button:nth-child(2){display:none}}
