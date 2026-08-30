@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS dynasty_results (
   roster_points REAL NOT NULL,
   unspent_dv INTEGER NOT NULL,
   draft_name TEXT,
+  simulated INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 `;

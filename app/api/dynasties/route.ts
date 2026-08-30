@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   await prepareDatabase();
   const [total, leaders] = await Promise.all([
     env.DB.prepare('SELECT COUNT(*) AS count FROM dynasty_results').first<{count:number}>(),
-    env.DB.prepare("SELECT draft_name AS name, franchise_value AS franchiseValue, roster_points AS rosterPoints, unspent_dv AS unspentDV, created_at AS createdAt FROM dynasty_results WHERE draft_name IS NOT NULL AND TRIM(draft_name) != '' ORDER BY franchise_value DESC, created_at ASC LIMIT 100").all(),
+    env.DB.prepare("SELECT draft_name AS name, franchise_value AS franchiseValue, roster_points AS rosterPoints, unspent_dv AS unspentDV, simulated, created_at AS createdAt FROM dynasty_results WHERE draft_name IS NOT NULL AND TRIM(draft_name) != '' ORDER BY franchise_value DESC, created_at ASC LIMIT 100").all(),
   ]);
   return Response.json({ total: total?.count || 0, leaderboard: leaders.results.map((row,index)=>({ rank:index+1,...row })) }, { headers: cors(request) });
 }
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
   await prepareDatabase();
   await env.DB.batch([
-    env.DB.prepare('INSERT OR IGNORE INTO dynasty_results (id, franchise_value, roster_points, unspent_dv, draft_name) VALUES (?, ?, ?, ?, ?)').bind(id, franchiseValue, rosterPoints, unspentDV, draftName),
+    env.DB.prepare('INSERT OR IGNORE INTO dynasty_results (id, franchise_value, roster_points, unspent_dv, draft_name, simulated) VALUES (?, ?, ?, ?, ?, 0)').bind(id, franchiseValue, rosterPoints, unspentDV, draftName),
     env.DB.prepare('UPDATE dynasty_results SET draft_name = COALESCE(draft_name, ?) WHERE id = ?').bind(draftName, id),
   ]);
   const saved = await env.DB.prepare('SELECT franchise_value AS value FROM dynasty_results WHERE id = ?').bind(id).first<{value:number}>();

@@ -1,0 +1,40 @@
+{
+  "seed": "0x5f3759df",
+  "runs": 1000,
+  "thresholds": {
+    "5": 2310.3,
+    "10": 2251.9,
+    "18": 2197.1,
+    "28": 2142.2,
+    "40": 2093.4,
+    "52": 2053.7,
+    "64": 2011.5,
+    "74": 1967.3,
+    "82": 1930.6,
+    "88": 1891.2,
+    "93": 1844.3,
+    "97": 1788.2,
+    "99": 1721.9
+  },
+  "best": {
+    "id": "simulation-0609",
+    "name": "Two Minute Outlaws",
+    "rosterPoints": 2491.8,
+    "unspentDV": 70,
+    "franchiseValue": 2561.8
+  },
+  "median": {
+    "id": "simulation-0108",
+    "name": "Championship Bandits",
+    "rosterPoints": 1969.3,
+    "unspentDV": 90,
+    "franchiseValue": 2059.3
+  },
+  "worst": {
+    "id": "simulation-0508",
+    "name": "Fantasy Dream Team",
+    "rosterPoints": 1484.6,
+    "unspentDV": 110,
+    "franchiseValue": 1594.6
+  }
+}

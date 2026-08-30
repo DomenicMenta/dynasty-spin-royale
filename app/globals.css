@@ -126,4 +126,6 @@
  .roster-slot:has(.player) .player>div strong{font-size:19px}
 }
 .topbar nav>button:not(.icon-button){border:0;background:none;color:#9d9277;font:9px monospace;letter-spacing:.11em;cursor:pointer}
+.leaderboard-note{margin:-6px 0 18px;color:#9d9277;font:9px/1.5 monospace;letter-spacing:.04em;max-width:520px}
+.sim-badge{display:inline-block;margin-left:6px;padding:2px 4px;border:1px solid #675525;color:#b5a77f;font:normal 6px monospace;letter-spacing:.12em;vertical-align:2px}
 @media(max-width:700px){.topbar nav>button:first-child{display:block}.topbar nav>button:nth-child(2){display:none}}
