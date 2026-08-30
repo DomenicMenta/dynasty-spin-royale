@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   await prepareDatabase();
   const [total, leaders] = await Promise.all([
     env.DB.prepare('SELECT COUNT(*) AS count FROM dynasty_results').first<{count:number}>(),
-    env.DB.prepare("SELECT draft_name AS name, franchise_value AS franchiseValue, roster_points AS rosterPoints, unspent_dv AS unspentDV, simulated, created_at AS createdAt FROM dynasty_results WHERE draft_name IS NOT NULL AND TRIM(draft_name) != '' ORDER BY franchise_value DESC, created_at ASC LIMIT 100").all(),
+    env.DB.prepare("SELECT 1 + (SELECT COUNT(*) FROM dynasty_results higher WHERE higher.franchise_value > ranked.franchise_value) AS rank, draft_name AS name, franchise_value AS franchiseValue, roster_points AS rosterPoints, unspent_dv AS unspentDV, simulated, created_at AS createdAt FROM dynasty_results ranked WHERE draft_name IS NOT NULL AND TRIM(draft_name) != '' ORDER BY franchise_value DESC, created_at ASC LIMIT 100").all(),
   ]);
   return Response.json({ total: total?.count || 0, leaderboard: leaders.results.map((row,index)=>({ rank:index+1,...row })) }, { headers: cors(request) });
 }
